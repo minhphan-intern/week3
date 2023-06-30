@@ -1,0 +1,8 @@
+---
+- name: Create user odoo
+  become_user: postgres
+  postgresql_user:
+    name: '{{odoo_user}}'
+    password: '{{odoo_password}}'
+    role_attr_flags: SUPERUSER
+  notify: Restart and enable PostgreSQL

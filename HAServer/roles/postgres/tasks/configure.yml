@@ -1,0 +1,15 @@
+---
+- name: Accept connection from odoo
+  postgresql_pg_hba:
+    dest: "{{postgresql__config_path}}/pg_hba.conf"
+    contype: host
+    databases: all
+    method: trust
+    source: 192.168.56.10/24
+
+- name: Configuration server
+  lineinfile:
+    path: "{{postgresql__config_path}}/postgresql.conf"
+    regexp: '#listen_address'
+    line: "listen_addresses = '{{dbIP}}'"
+  notify: Restart and enable PostgreSQL

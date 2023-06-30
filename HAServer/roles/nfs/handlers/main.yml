@@ -1,0 +1,9 @@
+---
+# handlers file for nfs
+- name: restart nfs server
+  command:
+    cmd: "systemctl restart nfs-kernel-server"
+
+- name: enable nfs server
+  command:
+    cmd: "systemctl enable nfs-kernel-server"

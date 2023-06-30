@@ -1,0 +1,28 @@
+---
+# vars file for odoo
+dependencies:
+- python3
+- python3-pip
+- python3-dev
+- libxml2-dev
+- libpq-dev
+- liblcms2-dev
+- libxslt1-dev
+- zlib1g-dev
+- libsasl2-dev
+- libldap2-dev
+- build-essential
+- git
+- libssl-dev
+- libffi-dev
+- libjpeg-dev
+- libblas-dev
+- libatlas-base-dev
+- npm
+- wkhtmltopdf
+
+odoo_local_path: "/opt/odoo15/.local/share/Odoo"
+
+nfsIP: "192.168.56.15"
+odoo_srv_path: "/mnt/Odoo"
+odoo_server_path: "{{nfsIP}}:{{odoo_srv_path}}"

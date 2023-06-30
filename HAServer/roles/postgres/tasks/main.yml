@@ -1,0 +1,14 @@
+---
+# tasks file for postgres
+- name: Install PostgreSQL for Debian
+  ansible.builtin.include_tasks: install-deb.yml
+  when: ansible_distribution == 'Debian'
+
+- name: Configure PostgreSQL for connection
+  ansible.builtin.include_tasks: configure.yml
+
+- name: Create user odoo for odoo
+  ansible.builtin.include_tasks: create-user.yml
+
+- name: recheck database
+  ansible.builtin.include_tasks: recheck.yml

@@ -1,0 +1,44 @@
+---
+- name: Install prerequisites
+  apt:
+    name: '{{Prerequisites}}'
+    update_cache: yes
+
+- name: Install debian keyring
+  apt:
+    name: debian-archive-keyring
+    update_cache: yes
+  when: ansible_distribution == 'Debian'
+
+- name: Install Ubuntu keyring
+  apt:
+    name: ubuntu-keyring
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Add NGINX signing key
+  ansible.builtin.apt_key:
+    id: '{{keyring_id}}'
+    keyring: '{{keyring_path}}'
+    url: '{{keyring_url}}'
+
+- name: set up the apt repository for stable nginx packages
+  ansible.builtin.apt_repository:
+    filename: signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg
+    repo: "deb http://nginx.org/packages/debian `lsb_release -cs` nginx"
+
+- name: create 99nginx file
+  ansible.builtin.file:
+    path: /etc/apt/preferences.d/99nginx
+    state: touch
+
+- name: Set up repository pinning 
+  lineinfile:
+    path: /etc/apt/preferences.d/99nginx
+    line: "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n"
+
+- name: Install NGINX
+  apt:
+    name: nginx
+    update_cache: yes
+    

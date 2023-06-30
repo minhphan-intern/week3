@@ -1,0 +1,7 @@
+---
+- name: recheck
+  debug:
+    var: "OK"
+  notify: 
+    - Restart and enable PostgreSQL
+    - wait for port 5432

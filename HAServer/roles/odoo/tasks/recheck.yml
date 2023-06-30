@@ -1,0 +1,8 @@
+---
+- name: recheck
+  debug:
+    var: "OK"
+  notify: 
+    - reload daemon
+    - restart odoo server
+    - wait for port

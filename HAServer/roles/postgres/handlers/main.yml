@@ -1,0 +1,13 @@
+---
+# handlers file for postgres
+- name: Restart and enable PostgreSQL
+  service:
+    name: postgresql
+    state: restarted
+    enabled: yes
+
+- name: Wait for port 5432
+  ansible.builtin.wait_for:
+    host: localhost
+    port: 5432
+    timeout: 300

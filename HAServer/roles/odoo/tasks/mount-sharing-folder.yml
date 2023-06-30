@@ -1,0 +1,21 @@
+---
+- name: Create odoo user
+  ansible.builtin.user:
+    name: odoo
+    home: /opt/odoo15
+    shell: /bin/bash
+
+- name: Create sharing folder
+  file:
+    path: '{{odoo_local_path}}'
+    state: directory
+    mode: 0777
+
+- name: Mount the directory
+  command:
+    cmd: "sudo mount -t nfs {{odoo_server_path}} {{odoo_local_path}}"
+
+- name: Define NFS share
+  lineinfile:
+    path: /etc/fstab
+    line: "{{odoo_server_path}}    {{odoo_local_path}}    nfs    defaults    0    0"

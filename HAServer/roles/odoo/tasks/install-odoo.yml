@@ -1,0 +1,43 @@
+---
+- name: Clone Git Repository
+  become_user: odoo
+  git:
+    repo: "https://github.com/odoo/odoo"
+    dest: /opt/odoo15/odoo
+    version: "15.0"
+    depth: "1"
+
+- name: Upgrade pip and install whell, setuptools
+  become_user: odoo
+  pip:
+    name: 
+      - wheel
+      - setuptools
+
+- name: Install odoo requirements
+  pip:
+    requirements: /opt/odoo15/odoo/requirements.txt
+
+- name: Create odoo.conf files
+  copy:
+    dest: /etc/odoo.conf
+    src: odoo.conf
+    owner: root
+    mode: 0744
+
+- name: Create odoo.service files
+  copy:
+    dest: /etc/systemd/system/odoo.service
+    src: odoo.service
+    owner: root
+    mode: 0744
+
+- name: create odoo.log files
+  file:
+    dest: /var/log/odoo.log
+    state: touch
+    owner: odoo
+    mode: 0744
+  notify: 
+    - reload daemon
+    - restart odoo server

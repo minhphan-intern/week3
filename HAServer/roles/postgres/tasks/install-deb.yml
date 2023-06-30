@@ -1,0 +1,32 @@
+---
+- name: Add postgresql.org repository GPG key
+  apt_key:
+    url: '{{ postgresql__gpg_url }}'
+
+- name: Configure postgresql.org apt repository
+  apt_repository:
+    repo: ' {{ postgresql__apt_repo }}'
+    state: present
+    update_cache: yes
+
+- name: "Debian: Install postgresql-common"
+  apt:
+    name: "postgresql-common"
+    state: present
+
+- name: Install postgres 13
+  apt:
+    name: "postgresql-{{ postgresql__version }}"
+    state: present
+
+- name: Start postgreSQL
+  service:
+    name: postgresql
+    state: started
+  notify: Wait for port 5432
+
+- name: "Debian: Install python3-psycopg2"
+  apt:
+    name: "python3-psycopg2"
+    state: present
+  when: ansible_python.version.major == 3

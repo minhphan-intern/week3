@@ -1,0 +1,18 @@
+---
+# tasks file for odoo
+- name: Install NFS client
+  ansible.builtin.include_tasks: install-nfs.client.yml
+
+- name: Mount odoo server share folder
+  ansible.builtin.include_tasks: mount-sharing-folder.yml
+  
+- name: Install dependencies
+  ansible.builtin.include_tasks: install-dependencies.yml
+
+- name: Install Odoo
+  ansible.builtin.include_tasks: install-odoo.yml
+
+- name: Recheck odoo
+  ansible.builtin.include_tasks: recheck.yml
+
+

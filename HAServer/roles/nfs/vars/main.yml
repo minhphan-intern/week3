@@ -1,0 +1,7 @@
+---
+# vars file for nfs
+
+odoo_path: /mnt/Odoo/
+filestore_path: /mnt/Odoo/filestore
+sessions_path: /mnt/Odoo/sessions
+addons_path: /mnt/Odoo/addons

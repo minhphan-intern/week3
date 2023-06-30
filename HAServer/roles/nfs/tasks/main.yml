@@ -1,0 +1,24 @@
+---
+# tasks file for nfs
+- name: Install NFS server
+  ansible.builtin.include_tasks: "install-{{ansible_os_family}}.yml"
+
+- name: Create directory for sync
+  file:
+    path: '{{ odoo_path }}'
+    state: directory
+    mode: '0777'
+    owner: nobody
+    group: nogroup 
+
+- name: Add user to sharing group
+  lineinfile:
+    path: /etc/exports
+    line: "/mnt/Odoo    192.168.56.1/24(rw,sync,no_subtree_check)"
+
+- name: Make shared directory available
+  command:
+    cmd: "sudo exportfs -a"
+  notify:
+  - restart nfs server
+  - enable nfs server

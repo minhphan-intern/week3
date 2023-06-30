@@ -1,0 +1,17 @@
+---
+# handlers file for proxy
+- name: reload daemon
+  systemd:
+    daemon-reload: yes
+
+- name: restart odoo server
+  service:
+    name: odoo
+    state: restarted
+    enabled: yes
+
+- name: wait for port start
+  wait_for:
+    port: 8069
+    state: started
+    timeout: 3000

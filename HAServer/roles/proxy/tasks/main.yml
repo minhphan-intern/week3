@@ -1,0 +1,18 @@
+---
+# tasks file for proxy
+- name: Set variables depending on the platform and the version of Odoo
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_os_family}}.yml"
+  tags:
+    - always
+
+- name: Install NGINX
+  ansible.builtin.include_tasks: "install-{{ansible_os_family}}.yml"
+
+- name: Proxy_pass for Odoo
+  ansible.builtin.include_tasks: "configuration.yml"
+
+- name: Task to trigger handler
+  command: echo "Triggering handler"
+  notify: restart nginx server
